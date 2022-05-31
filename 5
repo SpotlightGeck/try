@@ -1,0 +1,18 @@
+using System;
+
+namespace BookApp
+{
+    public class Author
+    {
+        public DateTime BirthDate { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public Author(string firstName, string lastName, DateTime birthDate)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            BirthDate = birthDate;
+        }
+    }
+}
