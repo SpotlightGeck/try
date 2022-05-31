@@ -1,0 +1,15 @@
+using System;
+namespace Downloader
+{
+    class Planets
+    {
+        public string Name { get; }
+        public string Url { get; }
+        public Planets(String planet)
+        {
+            string[] p = planet.Split(';');
+            this.Name = p[0];
+            this.Url = p[1];
+        }
+    }
+}
