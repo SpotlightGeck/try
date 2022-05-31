@@ -1,0 +1,77 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Downloader
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string file = @"planets.txt";
+            string[] Content= readFile(file);
+            FileDownload fileDownloader = new FileDownload();
+            List<Planets> planets = new List<Planets>();
+            for (int i=0; i <Content.Length; i++)
+            {
+                planets.Add(new Planets(Content[i]));
+            }
+            deleteExisting(planets);
+            foreach(Planets planet in planets)
+            {
+                fileDownloader.StartDownload(planet.Url, string.Format("{0}{1}{2}", @"Pictures\", planet.Name, Path.GetExtension(planet.Url)));
+            }
+        }
+
+        private static void deleteExisting(List<Planets> planets)
+        {
+            foreach(Planets planet in planets) 
+            {
+                if (File.Exists(string.Format("{0}{1}{2}", @"Pictures\", planet.Name, Path.GetExtension(planet.Url))))
+                {
+                    Console.WriteLine("Previous file {0} was Deleted", string.Format("{0}{1}{2}", @"Pictures\", planet.Name, Path.GetExtension(planet.Url)));
+                    File.Delete(string.Format("{0}{1}{2}", @"Pictures\", planet.Name, Path.GetExtension(planet.Url)));
+                }
+            }
+        }
+        private static string[] readFile(string path)
+        {
+            List<string> rows = new List<string>();
+            try
+            {
+                if (path == null)
+                {
+                    throw new ArgumentNullException("Path not found");
+                }
+                if (path.Length == 0)
+                {
+                    throw new ArgumentException("Empty");
+                }
+                using (StreamReader streamReader = new StreamReader(path,Encoding.Default))
+                {
+                    string item;
+                    while ((item = streamReader.ReadLine()) != null)
+                    {
+                        rows.Add(item);
+                    }
+                }
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine(ane.Message);
+            }
+            catch (ArgumentException ae)
+            {
+                Console.WriteLine(ae.Message);
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                Console.WriteLine(fnfe.Message);
+            }
+            return rows.ToArray();
+        }
+    }
+}
