@@ -1,0 +1,28 @@
+using System;
+using System.Net;
+
+
+namespace Downloader
+{
+    class FileDownload
+    {
+        public bool StartDownload(string url, string localFilePath)
+        {
+            Console.WriteLine("\n\nStart download of file: {0}", url);
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadFile(url, localFilePath);
+                    Console.WriteLine("\nDownload of file {0} was succesful!\n", localFilePath);
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\nError trying downloading the file {0} \n {1}", localFilePath, e.Message);
+                return false;
+            }
+        }
+    }
+}
